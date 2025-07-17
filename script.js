@@ -18,6 +18,10 @@ const auth = firebase.auth();
 const db = firebase.firestore();
 const customBowlsCollection = db.collection("customBowls");
 
+// --- UDAY'S FIREBASE UID ---
+// This is your unique User ID, used to control access to your saved bowls.
+const UDAY_FIREBASE_UID = "5AL5suSq9vZ5C7zfwwd89xaCs1a2"; 
+
 // --- Auth UI Elements ---
 const googleSignInButton = document.getElementById('googleSignInButton');
 const signOutButton = document.getElementById('signOutButton');
@@ -50,10 +54,6 @@ signOutButton.addEventListener('click', async () => {
 // --- Authentication State Listener (CRUCIAL FOR ACCESS CONTROL) ---
 // This function runs whenever the user's login status changes
 auth.onAuthStateChanged((user) => {
-    // --- IMPORTANT: REPLACE "YOUR_UDAY_FIREBASE_UID_HERE" WITH YOUR ACTUAL UID ---
-    // You get your UID from Firebase Console -> Authentication -> Users tab AFTER you log in to your app once.
-    const UDAY_FIREBASE_UID = "5AL5suSq9vZ5C7zfwwd89xaCs1a2"; 
-
     if (user) {
         // User is signed in.
         userStatusElement.textContent = `Logged in as: ${user.email}`;
@@ -146,7 +146,7 @@ async function buildBowl() {
         const docRef = await customBowlsCollection.add(bowlData);
         summaryDiv.textContent += `\n\nShareable ID: ${docRef.id}`;
         // Automatically refresh saved bowls if Uday is logged in
-        if (auth.currentUser && auth.currentUser.uid === UDAY_FIREBASE_UID) { // UDAY_FIREBASE_UID is defined at the top of script.js
+        if (auth.currentUser && auth.currentUser.uid === UDAY_FIREBASE_UID) { 
              displayAllSavedBowls();
         }
         clearForm();
@@ -186,7 +186,7 @@ async function loadBowl() {
             if (bowlData.cheese && bowlData.cheese.length > 0) loadedSummaryText += `Cheese: ${bowlData.cheese.join(', ')}\n`;
             if (bowlData.proteins && bowlData.proteins.length > 0) loadedSummaryText += `Proteins: ${bowlData.proteins.join(', ')}\n`;
             if (bowlData.dressings && bowlData.dressings.length > 0) loadedSummaryText += `Dressings: ${bowlData.dressings.join(', ')}\n`;
-            if (bowlData.extras && bowlData.extras.length > 0) loadedSummaryText += `Extras: ${bowlData.extras.join(', ')}\n`;
+            if (bowlData.extras && bowlData.extras.length > 0) loadedSummaryText += `Extras: ${extras.join(', ')}\n`;
             loadedSummaryText += `\n\nLoaded from ID: ${bowlId}`;
             document.getElementById('summary').textContent = loadedSummaryText;
             document.getElementById('copyButton').style.display = 'inline-block';
@@ -240,7 +240,6 @@ async function deleteBowl(bowlId) {
             await customBowlsCollection.doc(bowlId).delete();
             alert("Bowl deleted successfully!");
             // After deletion, refresh the list if Uday is logged in
-            // UDAY_FIREBASE_UID needs to be defined at the top of script.js
             if (auth.currentUser && auth.currentUser.uid === UDAY_FIREBASE_UID) { 
                 displayAllSavedBowls();
             }
