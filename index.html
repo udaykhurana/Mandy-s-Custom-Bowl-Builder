@@ -27,13 +27,13 @@
     #loadBowlButton:hover { background-color: #5a6268; }
     .bowl-card { background-color: #e0f7fa; padding: 15px; border-radius: 8px; margin-bottom: 10px; border: 1px solid #b2ebf2; }
     .bowl-card strong { color: #00796b; }
-    /* New rules for ingredient text capitalization */
-.item-list div span {
-  text-transform: lowercase; /* Makes all text lowercase first */
+/* Apply lowercase and capitalize first letter ONLY to spans next to checkboxes (ingredients) */
+.item-list div input[type="checkbox"] + span {
+  text-transform: lowercase;
 }
 
-.item-list div span::first-letter {
-  text-transform: uppercase; /* Capitalizes only the very first letter of the entire phrase */
+.item-list div input[type="checkbox"] + span::first-letter {
+  text-transform: uppercase;
 }
   </style>
 </head>
