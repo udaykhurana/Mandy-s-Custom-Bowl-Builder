@@ -1,11 +1,12 @@
-// Your Firebase Config (from Firebase Project Settings) - REPLACE WITH YOUR ACTUAL CONFIG
+// Your Firebase Config (from Firebase Project Settings) - ALREADY UPDATED WITH YOUR CONFIG
 const firebaseConfig = {
-    apiKey: "YOUR_API_KEY", // <--- REPLACE THIS
-    authDomain: "YOUR_AUTH_DOMAIN", // <--- REPLACE THIS
-    projectId: "YOUR_PROJECT_ID", // <--- REPLACE THIS
-    storageBucket: "YOUR_STORAGE_BUCKET", // <--- REPLACE THIS
-    messagingSenderId: "YOUR_MESSAGING_SENDER_ID", // <--- REPLACE THIS
-    appId: "YOUR_APP_ID" // <--- REPLACE THIS
+    apiKey: "AIzaSyBgJImFtnnZF8nBd-DIZgUvHaAVZn7Ajwg",
+    authDomain: "mycustombowls.firebaseapp.com",
+    projectId: "mycustombowls",
+    storageBucket: "mycustombowls.firebasestorage.app",
+    messagingSenderId: "528721723762",
+    appId: "1:528721723762:web:9c63b50c81d804419a9deb",
+    measurementId: "G-62S674CEBP"
 };
 
 // Initialize Firebase
