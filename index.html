@@ -1,214 +1,206 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Custom Bowl Builder</title>
-  <style>
-    body { font-family: sans-serif; margin: 20px; background-color: #f4f4f4; color: #333; }
-    .container { background-color: #fff; padding: 25px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); max-width: 800px; margin: auto; }
-    h1 { color: #4CAF50; text-align: center; margin-bottom: 25px; }
-    h2 { color: #555; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-top: 20px; }
-    .category { margin-bottom: 15px; }
-    .category label { display: block; margin-bottom: 8px; font-weight: bold; color: #666; }
-    .category input[type="text"] { width: calc(100% - 20px); padding: 10px; border: 1px solid #ddd; border-radius: 4px; }
-    .category input[type="checkbox"], .category input[type="radio"] { margin-right: 8px; }
-    .item-list { display: flex; flex-wrap: wrap; gap: 10px; }
-    .item-list div { background-color: #e9e9e9; padding: 8px 12px; border-radius: 5px; display: flex; align-items: center; cursor: pointer; transition: background-color 0.2s; }
-    .item-list div:hover { background-color: #dcdcdc; }
-    .item-list div input:checked + span { font-weight: bold; color: #007bff; }
-    .button-group { text-align: center; margin-top: 30px; }
-    button { background-color: #4CAF50; color: white; padding: 12px 25px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; transition: background-color 0.2s; margin: 0 10px; }
-    button:hover { background-color: #45a049; }
-    #summary, #allSavedBowls { margin-top: 30px; padding: 20px; background-color: #f9f9f9; border: 1px solid #eee; border-radius: 8px; white-space: pre-wrap; word-wrap: break-word; }
-    #copyButton { background-color: #007bff; margin-top: 15px; }
-    #copyButton:hover { background-color: #0056b3; }
-    #loadBowlSection { margin-top: 20px; padding-top: 20px; border-top: 1px solid #eee; text-align: center; }
-    #loadBowlId { padding: 8px; border: 1px solid #ddd; border-radius: 4px; margin-right: 10px; }
-    #loadBowlButton { background-color: #6c757d; }
-    #loadBowlButton:hover { background-color: #5a6268; }
-    .bowl-card { background-color: #e0f7fa; padding: 15px; border-radius: 8px; margin-bottom: 10px; border: 1px solid #b2ebf2; }
-    .bowl-card strong { color: #00796b; }
-/* Apply lowercase and capitalize first letter ONLY to spans next to checkboxes (ingredients) */
-.item-list div input[type="checkbox"] + span {
-  text-transform: lowercase;
-}
-
-.item-list div input[type="checkbox"] + span::first-letter {
-  text-transform: uppercase;
-}
-  </style>
+    <title>Custom Bowl Builder</title>
+    <style>
+        body { font-family: sans-serif; margin: 20px; background-color: #f4f4f4; color: #333; }
+        .container { background-color: #fff; padding: 25px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); max-width: 800px; margin: auto; }
+        h1 { color: #4CAF50; text-align: center; margin-bottom: 25px; }
+        h2 { color: #555; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-top: 20px; }
+        .category { margin-bottom: 15px; }
+        .category label { display: block; margin-bottom: 8px; font-weight: bold; color: #666; }
+        .category input[type="text"] { width: calc(100% - 20px); padding: 10px; border: 1px solid #ddd; border-radius: 4px; }
+        .category input[type="checkbox"], .category input[type="radio"] { margin-right: 8px; }
+        .item-list { display: flex; flex-wrap: wrap; gap: 10px; }
+        .item-list div { background-color: #e9e9e9; padding: 8px 12px; border-radius: 5px; display: flex; align-items: center; cursor: pointer; transition: background-color 0.2s; }
+        .item-list div:hover { background-color: #dcdcdc; }
+        .item-list div input:checked + span { font-weight: bold; color: #007bff; }
+        .button-group { text-align: center; margin-top: 30px; }
+        button { background-color: #4CAF50; color: white; padding: 12px 25px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; transition: background-color 0.2s; margin: 0 10px; }
+        button:hover { background-color: #45a049; }
+        #summary, #allSavedBowls { margin-top: 30px; padding: 20px; background-color: #f9f9f9; border: 1px solid #eee; border-radius: 8px; white-space: pre-wrap; word-wrap: break-word; }
+        #copyButton { background-color: #007bff; margin-top: 15px; }
+        #copyButton:hover { background-color: #0056b3; }
+        #loadBowlSection { margin-top: 20px; padding-top: 20px; border-top: 1px solid #eee; text-align: center; }
+        #loadBowlId { padding: 8px; border: 1px solid #ddd; border-radius: 4px; margin-right: 10px; }
+        #loadBowlButton { background-color: #6c757d; }
+        #loadBowlButton:hover { background-color: #5a6268; }
+        .bowl-card { background-color: #e0f7fa; padding: 15px; border-radius: 8px; margin-bottom: 10px; border: 1px solid #b2ebf2; }
+        .bowl-card strong { color: #00796b; }
+    </style>
 </head>
 <body>
 
 <div class="container">
-  <h1>Custom Bowl Builder</h1>
+    <h1>Custom Bowl Builder</h1>
 
-  <div class="category">
-    <label for="bowlName">Name Your Custom Bowl:</label>
-    <input type="text" id="bowlName" placeholder="e.g., Uday's Power Bowl">
-  </div>
-
-  <h2>Select Your Base</h2>
-  <p style="font-style: italic; color: #777;">(Please select only one base)</p>
-
-  <div class="category">
-    <label>Salad Bases:</label>
-    <div class="item-list">
-      <div><input type="radio" name="base" value="Romaine Lettuce" id="romaine"><label for="romaine"><span>Romaine Lettuce</span></label></div>
-      <div><input type="radio" name="base" value="Kale" id="kale_salad"><label for="kale_salad"><span>Kale</span></label></div>
-      <div><input type="radio" name="base" value="Mixed Greens" id="mixed_greens"><label for="mixed_greens"><span>Mixed Greens</span></label></div>
-      <div><input type="radio" name="base" value="Arugula" id="arugula_salad"><label for="arugula_salad"><span>Arugula</span></label></div>
+    <div class="category">
+        <label for="bowlName">Name Your Custom Bowl:</label>
+        <input type="text" id="bowlName" placeholder="e.g., Uday's Power Bowl">
     </div>
-  </div>
 
-  <div class="category">
-    <label>Grain Bowl Bases:</label>
-    <div class="item-list">
-      <div><input type="radio" name="base" value="Quinoa" id="quinoa_base"><label for="quinoa_base"><span>Quinoa</span></label></div>
-      <div><input type="radio" name="base" value="Orzo" id="orzo_base"><label for="orzo_base"><span>Orzo</span></label></div>
-      <div><input type="radio" name="base" value="Farro" id="farro_base"><label for="farro_base"><span>Farro</span></label></div>
-      <div><input type="radio" name="base" value="Brown Rice" id="brown_rice_base"><label for="brown_rice_base"><span>Brown Rice</span></label></div>
+    <h2>Select Your Base</h2>
+    <p style="font-style: italic; color: #777;">(Please select only one base)</p>
+
+    <div class="category">
+        <label>Salad Bases:</label>
+        <div class="item-list">
+            <div><input type="radio" name="base" value="Romaine Lettuce" id="romaine"><label for="romaine"><span>Romaine Lettuce</span></label></div>
+            <div><input type="radio" name="base" value="Kale" id="kale_salad"><label for="kale_salad"><span>Kale</span></label></div>
+            <div><input type="radio" name="base" value="Mixed Greens" id="mixed_greens"><label for="mixed_greens"><span>Mixed Greens</span></label></div>
+            <div><input type="radio" name="base" value="Arugula" id="arugula_salad"><label for="arugula_salad"><span>Arugula</span></label></div>
+        </div>
     </div>
-  </div>
 
-  <h2>Fresh Herbs</h2>
-  <div class="category">
-    <div class="item-list">
-      <div><input type="checkbox" value="BASIL"><span>BASIL</span></div>
-      <div><input type="checkbox" value="MINT"><span>MINT</span></div>
-      <div><input type="checkbox" value="CILANTRO"><span>CILANTRO</span></div>
-      <div><input type="checkbox" value="PARSLEY"><span>PARSLEY</span></div>
+    <div class="category">
+        <label>Grain Bowl Bases:</label>
+        <div class="item-list">
+            <div><input type="radio" name="base" value="Quinoa" id="quinoa_base"><label for="quinoa_base"><span>Quinoa</span></label></div>
+            <div><input type="radio" name="base" value="Orzo" id="orzo_base"><label for="orzo_base"><span>Orzo</span></label></div>
+            <div><input type="radio" name="base" value="Farro" id="farro_base"><label for="farro_base"><span>Farro</span></label></div>
+            <div><input type="radio" name="base" value="Brown Rice" id="brown_rice_base"><label for="brown_rice_base"><span>Brown Rice</span></label></div>
+        </div>
     </div>
-  </div>
 
-  <h2>Vegetables</h2>
-  <div class="category">
-    <div class="item-list">
-      <div><input type="checkbox" value="AVOCADO"><span>AVOCADO</span></div>
-      <div><input type="checkbox" value="CARROTS"><span>CARROTS</span></div>
-      <div><input type="checkbox" value="CHICKPEAS"><span>CHICKPEAS</span></div>
-      <div><input type="checkbox" value="CUCUMBER"><span>CUCUMBER</span></div>
-      <div><input type="checkbox" value="GREEN ONIONS"><span>GREEN ONIONS</span></div>
-      <div><input type="checkbox" value="MUSHROOMS"><span>MUSHROOMS</span></div>
-      <div><input type="checkbox" value="PICKLED RED ONIONS"><span>PICKLED RED ONIONS</span></div>
-      <div><input type="checkbox" value="RED PEPPER"><span>RED PEPPER</span></div>
-      <div><input type="checkbox" value="BROCCOLI"><span>BROCCOLI</span></div>
-      <div><input type="checkbox" value="CHERRY TOMATOES"><span>CHERRY TOMATOES</span></div>
-      <div><input type="checkbox" value="CORN"><span>CORN</span></div>
-      <div><input type="checkbox" value="EDAMAME"><span>EDAMAME</span></div>
-      <div><input type="checkbox" value="KALAMATA OLIVES"><span>KALAMATA OLIVES</span></div>
-      <div><input type="checkbox" value="PURPLE CABBAGE"><span>PURPLE CABBAGE</span></div>
-      <div><input type="checkbox" value="RED ONIONS"><span>RED ONIONS</span></div>
-      <div><input type="checkbox" value="ROASTED SWEET POTATO"><span>ROASTED SWEET POTATO</span></div>
+    <h2>Fresh Herbs</h2>
+    <div class="category">
+        <div class="item-list">
+            <div><input type="checkbox" value="Basil"><span>Basil</span></div>
+            <div><input type="checkbox" value="Mint"><span>Mint</span></div>
+            <div><input type="checkbox" value="Cilantro"><span>Cilantro</span></div>
+            <div><input type="checkbox" value="Parsley"><span>Parsley</span></div>
+        </div>
     </div>
-  </div>
 
-  <h2>Fruits</h2>
-  <div class="category">
-    <div class="item-list">
-      <div><input type="checkbox" value="APPLE"><span>APPLE</span></div>
-      <div><input type="checkbox" value="DRIED FIGS"><span>DRIED FIGS</span></div>
-      <div><input type="checkbox" value="MANGO"><span>MANGO</span></div>
-      <div><input type="checkbox" value="DRIED CRANBERRIES"><span>DRIED CRANBERRIES</span></div>
-      <div><input type="checkbox" value="MANDARINS"><span>MANDARINS</span></div>
-      <div><input type="checkbox" value="POMEGRANATE"><span>POMEGRANATE</span></div>
+    <h2>Vegetables</h2>
+    <div class="category">
+        <div class="item-list">
+            <div><input type="checkbox" value="Avocado"><span>Avocado</span></div>
+            <div><input type="checkbox" value="Carrots"><span>Carrots</span></div>
+            <div><input type="checkbox" value="Chickpeas"><span>Chickpeas</span></div>
+            <div><input type="checkbox" value="Cucumber"><span>Cucumber</span></div>
+            <div><input type="checkbox" value="Green Onions"><span>Green Onions</span></div>
+            <div><input type="checkbox" value="Mushrooms"><span>Mushrooms</span></div>
+            <div><input type="checkbox" value="Pickled Red Onions"><span>Pickled Red Onions</span></div>
+            <div><input type="checkbox" value="Red Pepper"><span>Red Pepper</span></div>
+            <div><input type="checkbox" value="Broccoli"><span>Broccoli</span></div>
+            <div><input type="checkbox" value="Cherry Tomatoes"><span>Cherry Tomatoes</span></div>
+            <div><input type="checkbox" value="Corn"><span>Corn</span></div>
+            <div><input type="checkbox" value="Edamame"><span>Edamame</span></div>
+            <div><input type="checkbox" value="Kalamata Olives"><span>Kalamata Olives</span></div>
+            <div><input type="checkbox" value="Purple Cabbage"><span>Purple Cabbage</span></div>
+            <div><input type="checkbox" value="Red Onions"><span>Red Onions</span></div>
+            <div><input type="checkbox" value="Roasted Sweet Potato"><span>Roasted Sweet Potato</span></div>
+        </div>
     </div>
-  </div>
 
-  <h2>Crunchies</h2>
-  <div class="category">
-    <div class="item-list">
-      <div><input type="checkbox" value="BAKED PITA CHIPS"><span>BAKED PITA CHIPS</span></div>
-      <div><input type="checkbox" value="CRISPY NOODLES"><span>CRISPY NOODLES</span></div>
-      <div><input type="checkbox" value="PEANUTS"><span>PEANUTS</span></div>
-      <div><input type="checkbox" value="SUNFLOWER SEEDS"><span>SUNFLOWER SEEDS</span></div>
-      <div><input type="checkbox" value="WALNUTS"><span>WALNUTS</span></div>
-      <div><input type="checkbox" value="NORI STRIPS"><span>NORI STRIPS</span></div>
-      <div><input type="checkbox" value="TORTILLA CHIPS"><span>TORTILLA CHIPS</span></div>
-      <div><input type="checkbox" value="CASHEWS"><span>CASHEWS</span></div>
-      <div><input type="checkbox" value="PECANS"><span>PECANS</span></div>
-      <div><input type="checkbox" value="SESAME SEEDS"><span>SESAME SEEDS</span></div>
-      <div><input type="checkbox" value="TEMPURA ONIONS"><span>TEMPURA ONIONS</span></div>
-      <div><input type="checkbox" value="WONTON STRIPS"><span>WONTON STRIPS</span></div>
-      <div><input type="checkbox" value="CRISPY CAPERS"><span>CRISPY CAPERS</span></div>
+    <h2>Fruits</h2>
+    <div class="category">
+        <div class="item-list">
+            <div><input type="checkbox" value="Apple"><span>Apple</span></div>
+            <div><input type="checkbox" value="Dried Figs"><span>Dried Figs</span></div>
+            <div><input type="checkbox" value="Mango"><span>Mango</span></div>
+            <div><input type="checkbox" value="Dried Cranberries"><span>Dried Cranberries</span></div>
+            <div><input type="checkbox" value="Mandarins"><span>Mandarins</span></div>
+            <div><input type="checkbox" value="Pomegranate"><span>Pomegranate</span></div>
+        </div>
     </div>
-  </div>
 
-  <h2>Cheese</h2>
-  <div class="category">
-    <div class="item-list">
-      <div><input type="checkbox" value="MOZZARELLA"><span>MOZZARELLA</span></div>
-      <div><input type="checkbox" value="PARMESAN"><span>PARMESAN</span></div>
-      <div><input type="checkbox" value="VEGAN FETA"><span>VEGAN FETA</span></div>
-      <div><input type="checkbox" value="FETA"><span>FETA</span></div>
-      <div><input type="checkbox" value="GOAT"><span>GOAT</span></div>
-      <div><input type="checkbox" value="CHEDDAR"><span>CHEDDAR</span></div>
+    <h2>Crunchies</h2>
+    <div class="category">
+        <div class="item-list">
+            <div><input type="checkbox" value="Baked Pita Chips"><span>Baked Pita Chips</span></div>
+            <div><input type="checkbox" value="Crispy Noodles"><span>Crispy Noodles</span></div>
+            <div><input type="checkbox" value="Peanuts"><span>Peanuts</span></div>
+            <div><input type="checkbox" value="Sunflower Seeds"><span>Sunflower Seeds</span></div>
+            <div><input type="checkbox" value="Walnuts"><span>Walnuts</span></div>
+            <div><input type="checkbox" value="Nori Strips"><span>Nori Strips</span></div>
+            <div><input type="checkbox" value="Tortilla Chips"><span>Tortilla Chips</span></div>
+            <div><input type="checkbox" value="Cashews"><span>Cashews</span></div>
+            <div><input type="checkbox" value="Pecans"><span>Pecans</span></div>
+            <div><input type="checkbox" value="Sesame Seeds"><span>Sesame Seeds</span></div>
+            <div><input type="checkbox" value="Tempura Onions"><span>Tempura Onions</span></div>
+            <div><input type="checkbox" value="Wonton Strips"><span>Wonton Strips</span></div>
+            <div><input type="checkbox" value="Crispy Capers"><span>Crispy Capers</span></div>
+        </div>
     </div>
-  </div>
 
-  <h2>Proteins</h2>
-  <div class="category">
-    <div class="item-list">
-      <div><input type="checkbox" value="Coconut Curry Shrimp"><span>Coconut Curry Shrimp</span></div>
-      <div><input type="checkbox" value="Togarashi Seared Tuna"><span>Togarashi Seared Tuna</span></div>
-      <div><input type="checkbox" value="Grilled Chicken"><span>Grilled Chicken</span></div>
-      <div><input type="checkbox" value="Tamari Mock Chicken"><span>Tamari Mock Chicken</span></div>
-      <div><input type="checkbox" value="Peanut Mock Chicken"><span>Peanut Mock Chicken</span></div>
-      <div><input type="checkbox" value="Bacon"><span>Bacon</span></div>
-      <div><input type="checkbox" value="Roasted Turkey"><span>Roasted Turkey</span></div>
-      <div><input type="checkbox" value="Free Run Hard-boiled Egg"><span>Free Run Hard-boiled Egg</span></div>
-      <div><input type="checkbox" value="White Tuna"><span>White Tuna</span></div>
-      <div><input type="checkbox" value="Hoisin Duck"><span>Hoisin Duck</span></div>
-      <div><input type="checkbox" value="Balsamic Tofu"><span>Balsamic Tofu</span></div>
+    <h2>Cheese</h2>
+    <div class="category">
+        <div class="item-list">
+            <div><input type="checkbox" value="Mozzarella"><span>Mozzarella</span></div>
+            <div><input type="checkbox" value="Parmesan"><span>Parmesan</span></div>
+            <div><input type="checkbox" value="Vegan Feta"><span>Vegan Feta</span></div>
+            <div><input type="checkbox" value="Feta"><span>Feta</span></div>
+            <div><input type="checkbox" value="Goat"><span>Goat</span></div>
+            <div><input type="checkbox" value="Cheddar"><span>Cheddar</span></div>
+        </div>
     </div>
-  </div>
 
-  <h2>Dressings</h2>
-  <div class="category">
-    <div class="item-list">
-      <div><input type="checkbox" value="CAESAR"><span>CAESAR</span></div>
-      <div><input type="checkbox" value="CILANTRO CUMIN"><span>CILANTRO CUMIN</span></div>
-      <div><input type="checkbox" value="WASABI GINGER"><span>WASABI GINGER</span></div>
-      <div><input type="checkbox" value="CHILI LIME"><span>CHILI LIME</span></div>
-      <div><input type="checkbox" value="GREEN GODDESS"><span>GREEN GODDESS</span></div>
-      <div><input type="checkbox" value="LEMON DILL"><span>LEMON DILL</span></div>
-      <div><input type="checkbox" value="SUMMER"><span>SUMMER</span></div>
-      <div><input type="checkbox" value="TAMARI"><span>TAMARI</span></div>
-      <div><input type="checkbox" value="CARROT GINGER"><span>CARROT GINGER</span></div>
-      <div><input type="checkbox" value="CLASSIC BALSAMIC"><span>CLASSIC BALSAMIC</span></div>
-      <div><input type="checkbox" value="HONEY MUSTARD"><span>HONEY MUSTARD</span></div>
-      <div><input type="checkbox" value="LEMON OLIVE OIL"><span>LEMON OLIVE OIL</span></div>
-      <div><input type="checkbox" value="SWEET SESAME"><span>SWEET SESAME</span></div>
-      <div><input type="checkbox" value="TANGY CITRUS"><span>TANGY CITRUS</span></div>
+    <h2>Proteins</h2>
+    <div class="category">
+        <div class="item-list">
+            <div><input type="checkbox" value="Coconut Curry Shrimp"><span>Coconut Curry Shrimp</span></div>
+            <div><input type="checkbox" value="Togarashi Seared Tuna"><span>Togarashi Seared Tuna</span></div>
+            <div><input type="checkbox" value="Grilled Chicken"><span>Grilled Chicken</span></div>
+            <div><input type="checkbox" value="Tamari Mock Chicken"><span>Tamari Mock Chicken</span></div>
+            <div><input type="checkbox" value="Peanut Mock Chicken"><span>Peanut Mock Chicken</span></div>
+            <div><input type="checkbox" value="Bacon"><span>Bacon</span></div>
+            <div><input type="checkbox" value="Roasted Turkey"><span>Roasted Turkey</span></div>
+            <div><input type="checkbox" value="Free Run Hard-boiled Egg"><span>Free Run Hard-boiled Egg</span></div>
+            <div><input type="checkbox" value="White Tuna"><span>White Tuna</span></div>
+            <div><input type="checkbox" value="Hoisin Duck"><span>Hoisin Duck</span></div>
+            <div><input type="checkbox" value="Balsamic Tofu"><span>Balsamic Tofu</span></div>
+        </div>
     </div>
-  </div>
 
-  <h2>Extras</h2>
-  <div class="category">
-    <div class="item-list">
-      <div><input type="checkbox" value="Extra Dressing"><span>Extra Dressing</span></div>
-      <div><input type="checkbox" value="Hot Sauce"><span>Hot Sauce</span></div>
+    <h2>Dressings</h2>
+    <div class="category">
+        <div class="item-list">
+            <div><input type="checkbox" value="Caesar"><span>Caesar</span></div>
+            <div><input type="checkbox" value="Cilantro Cumin"><span>Cilantro Cumin</span></div>
+            <div><input type="checkbox" value="Wasabi Ginger"><span>Wasabi Ginger</span></div>
+            <div><input type="checkbox" value="Chili Lime"><span>Chili Lime</span></div>
+            <div><input type="checkbox" value="Green Goddess"><span>Green Goddess</span></div>
+            <div><input type="checkbox" value="Lemon Dill"><span>Lemon Dill</span></div>
+            <div><input type="checkbox" value="Summer"><span>Summer</span></div>
+            <div><input type="checkbox" value="Tamari"><span>Tamari</span></div>
+            <div><input type="checkbox" value="Carrot Ginger"><span>Carrot Ginger</span></div>
+            <div><input type="checkbox" value="Classic Balsamic"><span>Classic Balsamic</span></div>
+            <div><input type="checkbox" value="Honey Mustard"><span>Honey Mustard</span></div>
+            <div><input type="checkbox" value="Lemon Olive Oil"><span>Lemon Olive Oil</span></div>
+            <div><input type="checkbox" value="Sweet Sesame"><span>Sweet Sesame</span></div>
+            <div><input type="checkbox" value="Tangy Citrus"><span>Tangy Citrus</span></div>
+        </div>
     </div>
-  </div>
 
-  <div class="button-group">
-    <button onclick="buildBowl()">Build My Bowl!</button>
-  </div>
+    <h2>Extras</h2>
+    <div class="category">
+        <div class="item-list">
+            <div><input type="checkbox" value="Extra Dressing"><span>Extra Dressing</span></div>
+            <div><input type="checkbox" value="Hot Sauce"><span>Hot Sauce</span></div>
+        </div>
+    </div>
 
-  <div id="summary"></div>
-  <button id="copyButton" style="display: none;" onclick="copySummary()">Copy to Clipboard</button>
+    <div class="button-group">
+        <button onclick="buildBowl()">Build My Bowl!</button>
+    </div>
 
-  <div id="loadBowlSection">
-    <h2>Load a Saved Bowl</h2>
-    <input type="text" id="loadBowlId" placeholder="Enter Shareable ID">
-    <button id="loadBowlButton" onclick="loadBowl()">Load Bowl</button>
-  </div>
+    <div id="summary"></div>
+    <button id="copyButton" style="display: none;" onclick="copySummary()">Copy to Clipboard</button>
 
-  <h2>All Saved Bowls</h2>
-  <div id="allSavedBowls"></div>
+    <div id="loadBowlSection">
+        <h2>Load a Saved Bowl</h2>
+        <input type="text" id="loadBowlId" placeholder="Enter Shareable ID">
+        <button id="loadBowlButton" onclick="loadBowl()">Load Bowl</button>
+    </div>
+
+    <h2>All Saved Bowls</h2>
+    <div id="allSavedBowls"></div>
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script>
-<script src="script.js"></script> 
+<script src="script.js"></script>
 </body>
 </html>
