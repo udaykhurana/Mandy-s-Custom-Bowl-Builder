@@ -1,14 +1,14 @@
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY", // REPLACE WITH YOUR ACTUAL API KEY
-  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT_ID.appspot.com",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID",
-  measurementId: "YOUR_MEASUREMENT_ID"
-};
+    apiKey: "AIzaSyBgJImFtnnZF8nBd-DIZgUvHaAVZn7Ajwg",
+    authDomain: "mycustombowls.firebaseapp.com",
+    projectId: "mycustombowls",
+    storageBucket: "mycustombowls.firebasestorage.app",
+    messagingSenderId: "528721723762",
+    appId: "1:528721723762:web:9c63b50c81d804419a9deb",
+    measurementId: "G-62S674CEBP"
+  };
 
 // Initialize Firebase
 if (!firebase.apps.length) {
