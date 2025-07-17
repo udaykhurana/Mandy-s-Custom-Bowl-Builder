@@ -34,6 +34,12 @@
 <div class="container">
     <h1>Custom Bowl Builder</h1>
 
+    <div id="auth-ui" style="text-align: center; margin-bottom: 20px;">
+        <p id="user-status">You are not logged in.</p>
+        <button id="googleSignInButton">Sign In with Google</button>
+        <button id="signOutButton" style="display: none;">Sign Out</button>
+    </div>
+
     <div class="category">
         <label for="bowlName">Name Your Custom Bowl:</label>
         <input type="text" id="bowlName" placeholder="e.g., Uday's Power Bowl">
@@ -196,11 +202,11 @@
     </div>
 
     <h2>All Saved Bowls</h2>
-    <div id="allSavedBowls"></div>
+    <div id="allSavedBowls" style="display: none;"></div>
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script> <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script>
 <script src="script.js"></script>
 </body>
 </html>
