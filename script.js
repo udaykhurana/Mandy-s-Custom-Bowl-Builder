@@ -52,7 +52,7 @@ signOutButton.addEventListener('click', async () => {
 auth.onAuthStateChanged((user) => {
     // --- IMPORTANT: REPLACE "YOUR_UDAY_FIREBASE_UID_HERE" WITH YOUR ACTUAL UID ---
     // You get your UID from Firebase Console -> Authentication -> Users tab AFTER you log in to your app once.
-    const UDAY_FIREBASE_UID = "YOUR_UDAY_FIREBASE_UID_HERE"; 
+    const UDAY_FIREBASE_UID = "5AL5suSq9vZ5C7zfwwd89xaCs1a2"; 
 
     if (user) {
         // User is signed in.
